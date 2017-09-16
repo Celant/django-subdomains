@@ -44,7 +44,18 @@ class SubdomainTestMixin(object):
         MIDDLEWARE_CLASSES=(
             'django.middleware.common.CommonMiddleware',
             'subdomains.middleware.SubdomainURLRoutingMiddleware',
-        ))
+        ),
+        TEMPLATES=[
+            {
+                'BACKEND': 'django.template.backends.django.DjangoTemplates',
+                'DIRS': [],
+                'APP_DIRS': True,
+                'OPTIONS': {
+                    # ... some options here ...
+                },
+            },
+        ],
+        ALLOWED_HOSTS=['*'])
     def run(self, *args, **kwargs):
         super(SubdomainTestMixin, self).run(*args, **kwargs)
 

@@ -8,7 +8,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse as simple_reverse
 
 
-def current_site_domain(request):
+def current_site_domain(request=None):
     from django.contrib.sites.models import Site
     domain = Site.objects.get_current(request).domain
 
