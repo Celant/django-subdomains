@@ -4,4 +4,3 @@
 build/
 dist/
 pip-log.txt
-setup.py
