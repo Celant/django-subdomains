@@ -6,11 +6,23 @@ except ImportError:
 
 from django.conf import settings
 from django.core.urlresolvers import reverse as simple_reverse
+from django.core.exceptions import ImproperlyConfigured
 
 
 def current_site_domain(request=None):
-    from django.contrib.sites.models import Site
-    domain = Site.objects.get_current(request).domain
+    from django.conf import settings
+    if getattr(settings, 'SITE_ID', ''):
+        from django.contrib.sites.models import Site
+        domain = Site.objects.get_current(request).domain
+    elif getattr(settings, 'ROOT_DOMAIN', ''):
+        domain = getattr(settings, 'ROOT_DOMAIN', '')
+    else:
+        raise ImproperlyConfigured(
+            "You're using the \"subdomains framework\" without having "
+            "set the SITE_ID setting. Create a site in your database and "
+            "set the SITE_ID setting or set the ROOT_DOMAIN setting "
+            "to fix this error."
+        )
 
     prefix = 'www.'
     if getattr(settings, 'REMOVE_WWW_FROM_DOMAIN', False) \
